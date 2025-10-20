@@ -37,4 +37,4 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{ env.ORG_LC }}/headers-app-multiport:${{ env.IMAGE_TAG }}-latest-dev
+          docker push ghcr.io/${{ env.ORG_LC }}/headers-app-multiport:${{ env.IMAGE_TAG }}-latest-dev 
