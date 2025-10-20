@@ -1,0 +1,21 @@
+{
+  "name": "headersapp-multiport",
+  "version": "1.0.0",
+  "description": "A version of the headersapp that responds on multiple ports",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "DWBatmanPS",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cjs": "^0.0.11",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0",
+    "morgan": "^1.10.1"
+  }
+}

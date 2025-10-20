@@ -1,0 +1,50 @@
+name: Create Release
+
+on:
+  release: 
+    types:
+      [published]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22' # Specify the Node.js version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set lower case org name
+        id: org-name
+        run: echo "ORG_LC=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+  
+      - name: Set lower case release version
+        id: release_version
+        run: echo "release_version=$(echo ${{ github.ref_name }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      
+      - name: Build Docker image
+        run: |
+          docker build -t ghcr.io/${{ env.ORG_LC }}/headers-app-multiport:prod-latest -t ghcr.io/${{ env.ORG_LC }}/headers-app:prod-${{ env.release_version }} -t ghcr.io/${{ env.ORG_LC }}/headers-app-multiport:latest .
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push Specific version Prod Docker image
+        run: |
+          docker push ghcr.io/${{ env.ORG_LC }}/headers-app-multiport:prod-${{ env.release_version }} 
+
+      - name: Push Prod-Latest Docker image
+        run: |
+          docker push ghcr.io/${{ env.ORG_LC }}/headers-app-multiport:prod-latest
+
+      - name: Push latest Docker image
+        run: |
+          docker push ghcr.io/${{ env.ORG_LC }}/headers-app-multiport:latest

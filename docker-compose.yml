@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+
+  node-application:
+    build: .
+    container_name: headers-app-multiport
+    ports:
+      - "80:80"
+      - "443:443"
+      - "81:81"
+      - "444:444"
+    environment:
+      - SSL_Key=/etc/ssl/private/tls.key
+      - SSL_Cert=/etc/ssl/private/tls.crt
+      - USESSL=false
+    restart: always
